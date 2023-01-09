@@ -23,9 +23,15 @@ const studentSchema = new mongoose.Schema({
     }],
     marks:
         [{
-            type: Number,
-            required: true,
-            default: 0
+            m: {
+                type: Number,
+                required: true,
+                default: 0,
+            },
+            createdAt: {
+                type: Date,
+                default: Date.now()
+            }
         }],
     Image: {
         public_id: {
