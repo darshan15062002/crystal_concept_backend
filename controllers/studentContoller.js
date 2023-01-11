@@ -1,6 +1,7 @@
 const student = require('../model/studentModal')
 const ErrorHander = require('../utils/errorhandler')
-const catchAsyncError = require("../middleware/catchAsyncError")
+const catchAsyncError = require("../middleware/catchAsyncError");
+const ApiFeatures = require('../utils/apiFeatures');
 
 // create student 
 exports.createStudent = catchAsyncError(async (req, res, next) => {
@@ -13,7 +14,8 @@ exports.createStudent = catchAsyncError(async (req, res, next) => {
 
 
 exports.getAllStudent = catchAsyncError(async (req, res) => {
-    const product = await student.find();
+    const apifeature = new ApiFeatures(student.find(), req.query).search()
+    const product = await apifeature.query;
     res.status(200).json({
         success: true,
         product
