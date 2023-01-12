@@ -6,10 +6,15 @@ const studentSchema = new mongoose.Schema({
         required: [true, 'please enter student name'],
         trime: true
     },
+    email: {
+        type: String,
+        required: [true, 'please enter student email'],
+    },
     standard: {
         type: Number,
         required: [true, 'please enter student standard']
     },
+
     // attendance: [{
     //     Atte: {
     //         type: Number,
@@ -21,12 +26,17 @@ const studentSchema = new mongoose.Schema({
     //         default: Date.now()
     //     }
     // }],
+
     marks:
         [{
             m: {
                 type: Number,
                 required: true,
                 default: 0,
+            },
+            subject: {
+                type: String,
+                require: [true, "pleace enter subject"]
             },
             createdAt: {
                 type: Date,
