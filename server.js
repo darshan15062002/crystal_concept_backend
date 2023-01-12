@@ -5,7 +5,7 @@ process.on('uncaughtException', (err) => {
     console.log(`Error ${err.message}`);
 })
 // config
-// dotenv.config({ path: "config/config.env" })
+dotenv.config({ path: "config/config.env" })
 
 // connecting database
 connectDB()
