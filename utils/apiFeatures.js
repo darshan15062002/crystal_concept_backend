@@ -6,7 +6,7 @@ class ApiFeatures {
     search() {
         const name = this.queryStr.name
         const keyword = this.queryStr.keyword
-        if (name.length != 0) {
+        if (name?) {
             const query = this.query.find({ ...name })
         } else { const query = this.query.find({ ...keyword }) }
 
