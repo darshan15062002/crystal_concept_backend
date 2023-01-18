@@ -18,6 +18,7 @@ class ApiFeatures {
             name: {
                 $regex: this.queryStr.name,
                 $options:'i',
+        },
         } : {}
         const query = this.query.find({ ...keyword })
         return this
