@@ -4,16 +4,20 @@ class ApiFeatures {
         this.queryStr = queryStr
     }
     search() {
-        const name = this.queryStr.name ? {
-            name: this.queryStr.name
-        } : {}
+
         const keyword = this.queryStr.keyword ? {
             email: this.queryStr.keyword
         } : {}
-        if (name.length != 0) {
-            const query = this.query.find({ ...name })
-        } else { const query = this.query.find({ ...keyword }) }
 
+        const query = this.query.find({ ...keyword })
+
+        return this
+    }
+    searchByName() {
+        const keyword = this.queryStr.name ? {
+            name: this.queryStr.name
+        } : {}
+        const query = this.query.find({ ...keyword })
         return this
     }
 }

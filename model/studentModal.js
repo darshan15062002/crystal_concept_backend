@@ -34,6 +34,11 @@ const studentSchema = new mongoose.Schema({
                 required: true,
                 default: 0,
             },
+            outof: {
+                type: Number,
+                required: true,
+                default: 0,
+            },
             subject: {
                 type: String,
                 require: [true, "pleace enter subject"]

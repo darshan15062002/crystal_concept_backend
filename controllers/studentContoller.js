@@ -14,7 +14,7 @@ exports.createStudent = catchAsyncError(async (req, res, next) => {
 
 
 exports.getAllStudent = catchAsyncError(async (req, res) => {
-    const apifeature = new ApiFeatures(student.find(), req.query).search()
+    const apifeature = new ApiFeatures(student.find(), req.query).search().searchByName()
     const product = await apifeature.query;
     res.status(200).json({
         success: true,
