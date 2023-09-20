@@ -20,5 +20,15 @@ class ApiFeatures {
         const query = this.query.find({ ...keyword })
         return this
     }
+    searchByName() {
+        const keyword = this.queryStr.name ? {
+            name: {
+                $regex: this.queryStr.name,
+                $options: 'i',
+            },
+        } : {}
+        const query = this.query.find({ ...keyword })
+        return this
+    }
 }
 module.exports = ApiFeatures
