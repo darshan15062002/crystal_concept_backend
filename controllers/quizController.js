@@ -51,7 +51,7 @@ exports.updateQuiz = catchAsyncError(async (req, res, next) => {
 
 exports.getAllQuiz = catchAsyncError(async (req, res, next) => {
 
-    const quizs = await Quiz.find()
+    const quizs = await Quiz.find({})
 
     res.status(200).json({
         success: true,
