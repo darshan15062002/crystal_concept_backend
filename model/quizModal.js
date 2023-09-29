@@ -21,8 +21,8 @@ const quizSchema = new mongoose.Schema({
                 },
             ],
             correctAnswer: {
-                type: Number,
-                required: true,
+                type: String,
+                required: [true, "please enter correct answer"]
             },
 
         },

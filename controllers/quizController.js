@@ -19,8 +19,9 @@ exports.createQuiz = catchAsyncError(async (req, res, next) => {
            "startDate":"2023-09-30T12:00:00.000Z",
        "endDate":  "2023-09-30T12:30:00.000Z"
      }*/
-
+    console.log(req.body);
     const response = await Quiz.create(req.body);
+
     res.status(200).json({
         message: 'quiz created successfully',
         response: response
