@@ -4,8 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "dev": "Set NODE_ENV=development&& nodemon ./server.js",
-    "start": "node ./server.js"
+    "dev": "Set NODE_ENV=development&& nodemon server.js",
+    "start": "node server.js"
   },
   "engines": {
     "node": ">=16.20.1"
