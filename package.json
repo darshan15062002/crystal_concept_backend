@@ -10,7 +10,7 @@
     "start": "node /server.js"
   },
   "engines": {
-    "node": ">=16.20.1"
+    "node": ">=20.8.0"
   },
   "author": "",
   "license": "ISC",
