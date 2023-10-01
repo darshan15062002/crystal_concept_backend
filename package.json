@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "dev": "Set NODE_ENV=development&& nodemon ./server.js",
+    "dev": "nodemon ./server.js",
     "start": "node ./server.js"
   },
   "engines": {
@@ -13,7 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^5.0.0",
+    "bcrypt": "^5.1.0",
     "body-parser": "^1.20.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -22,7 +22,6 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^5.13.15",
     "nodemon": "^3.0.1",
-    "semver": "^7.5.4",
     "validator": "^13.11.0"
   }
 }
