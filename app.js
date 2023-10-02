@@ -1,7 +1,9 @@
 const express = require('express')
 const cors = require('cors')
 const cookieParser = require('cookie-parser');
+const dotenv = require('dotenv')
 const app = express();
+dotenv.config({ path: "config/config.env" })
 app.use(cors({
    credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
