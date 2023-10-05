@@ -7,7 +7,7 @@ dotenv.config({ path: "config/config.env" })
 app.use(cors({
    credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
-    origin: ['http://localhost:3000', process.env.FRONTEND_URI_2]
+    origin: ['http://localhost:3000', 'https://crystalconcept.netlify.app']
   }
 ))
 app.use(express.json())
