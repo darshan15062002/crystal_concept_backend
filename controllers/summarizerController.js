@@ -50,16 +50,17 @@ exports.getSummary = catchAsyncError(async (req, res) => {
 
 
 exports.getSummaryGoogle = catchAsyncError((req, res) => {
-
+    const pdfText = req.body.pdf_text;
+    const rows = req.body.rows;
     const MODEL_NAME = "models/text-bison-001";
-    const API_KEY = process.env.API_KEY || 'AIzaSyCqRmfwx5dXeJZGqovb_XZ7WdtilBV_6_U';
+    const API_KEY = process.env.API_KEY;
 
 
     const client = new TextServiceClient({
         authClient: new GoogleAuth().fromAPIKey(API_KEY),
     });
 
-    const prompt = "PaLM 2 is our next generation large language model that builds on Google’s legacy of breakthrough research in machine learning and responsible AI. ";
+    const prompt = `You are a helpful assistant that covert the answer of qestion in more simple and easy to learn format in ${rows} rows only. here is answer: ${pdfText}`;
 
     client
         .generateText({
