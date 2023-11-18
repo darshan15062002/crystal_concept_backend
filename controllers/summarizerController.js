@@ -16,7 +16,7 @@ exports.getSummary = catchAsyncError(async (req, res) => {
     // Set up the data payload
 
     const messages = [
-        { role: 'system', content: `You are a helpful assistant that covert the answer of qestion in more simple and easy to learn format in ${rows} rows` },
+        { role: 'system', content: `You are a helpful assistant that covert the answer of qestion in more simple and easy to learn format in ${rows} rows only` },
         { role: 'user', content: prompt }
     ]
 
