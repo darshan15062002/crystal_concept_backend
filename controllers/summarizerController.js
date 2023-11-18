@@ -73,7 +73,10 @@ exports.getSummaryGoogle = catchAsyncError((req, res) => {
             const generatedText = result[0]?.candidates[0]?.output || "No output available";
             console.log(generatedText, "generated");
 
-            res.json({ message: generatedText });
+            res.status(200).json({
+                sucsses: true,
+                message: generatedText
+            })
         })
 
 
