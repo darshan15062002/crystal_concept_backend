@@ -54,13 +54,17 @@ exports.getSummaryGoogle = catchAsyncError((req, res) => {
     const rows = req.body.rows;
     const MODEL_NAME = "models/text-bison-001";
     const API_KEY = process.env.API_KEY;
-
-
+    if (pdfText && pdfText.length <= 50) {
+        res.status(200).json({
+            sucsses: true,
+            message: "The provided text is not suitable "
+        })
+    }
     const client = new TextServiceClient({
         authClient: new GoogleAuth().fromAPIKey(API_KEY),
     });
 
-    const prompt = `You are a helpful assistant that summarize and covert the text in more simple and easy to remember format in ${rows} rows only. here is text: ${pdfText}`;
+    const prompt = `You are a helpful assistant. Summarize and convert the following text into a simple and easy-to-remember format in ${rows} rows only:\n\n${pdfText}`;
 
     client
         .generateText({
