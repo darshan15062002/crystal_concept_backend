@@ -60,7 +60,7 @@ exports.getSummaryGoogle = catchAsyncError((req, res) => {
         authClient: new GoogleAuth().fromAPIKey(API_KEY),
     });
 
-    const prompt = `You are a helpful assistant that summarize and covert the text in more simple and easy to learn format in ${rows} rows only. here is text: ${pdfText}`;
+    const prompt = `You are a helpful assistant that summarize and covert the text in more simple and easy to remember format in ${rows} rows only. here is text: ${pdfText}`;
 
     client
         .generateText({
