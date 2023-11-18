@@ -1,6 +1,8 @@
 const { default: OpenAI } = require("openai");
 const catchAsyncError = require("../middleware/catchAsyncError");
-
+const { GoogleAuth } = require("google-auth-library");
+const { TextServiceClient } =
+    require("@google-ai/generativelanguage").v1beta2;
 exports.getSummary = catchAsyncError(async (req, res) => {
 
     const openai = new OpenAI({
@@ -43,4 +45,36 @@ exports.getSummary = catchAsyncError(async (req, res) => {
         console.error(error);
         res.status(500).send('Internal Server Error');
     }
+})
+
+
+
+exports.getSummaryGoogle = catchAsyncError((req, res) => {
+
+    const MODEL_NAME = "models/text-bison-001";
+    const API_KEY = process.env.API_KEY || 'AIzaSyCqRmfwx5dXeJZGqovb_XZ7WdtilBV_6_U';
+
+
+    const client = new TextServiceClient({
+        authClient: new GoogleAuth().fromAPIKey(API_KEY),
+    });
+
+    const prompt = "PaLM 2 is our next generation large language model that builds on Google’s legacy of breakthrough research in machine learning and responsible AI. ";
+
+    client
+        .generateText({
+            model: MODEL_NAME,
+            prompt: {
+                text: prompt,
+            },
+        })
+        .then((result) => {
+            const generatedText = result[0]?.candidates[0]?.output || "No output available";
+            console.log(generatedText, "generated");
+
+            res.json({ message: generatedText });
+        })
+
+
+
 })
