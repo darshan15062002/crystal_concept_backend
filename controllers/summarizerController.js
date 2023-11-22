@@ -64,7 +64,7 @@ exports.getSummaryGoogle = catchAsyncError((req, res) => {
         authClient: new GoogleAuth().fromAPIKey(API_KEY),
     });
 
-    const prompt = `You are a helpful assistant. convert the following text into a simple and easy-to-remember format in ${rows} rows only here is text:${pdfText}`;
+    const prompt = `You are a helpful assistant. Convert the following answer into a simple and easy-to-remember format so that children get good marks. Here is the text: ${pdfText}`;
 
     client
         .generateText({
