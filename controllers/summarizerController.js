@@ -64,7 +64,7 @@ exports.getSummaryGoogle = catchAsyncError((req, res) => {
         authClient: new GoogleAuth().fromAPIKey(API_KEY),
     });
 
-    const prompt = `You are a friendly study assistant. Can you help me simplify this text so that it's easier for students to remember? Here's the text for you to review: ${pdfText}`;
+    const prompt = `You are a friendly study assistant. Can you help me simplify this text so that it's easier for students to remember? Here's the text for you to review: ${pdfText} , give me in proper formate`;
 
     client
         .generateText({
