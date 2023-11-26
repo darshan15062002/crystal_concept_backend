@@ -20,3 +20,23 @@ exports.submitQuiz = catchAsyncError(async (req, res, next) => {
         res.status(500).json({ success: false, message: 'Internal Server Error' });
     }
 });
+
+exports.getMySubmission = catchAsyncError(async (req, res, next) => {
+    try {
+        const userId = req.user.id; // Replace with the actual location of user information in your request object
+
+        // Query the database to retrieve the user's submission
+        const submission = await Submission.findOne({ userId });
+
+        if (!submission) {
+            return res.status(404).json({ success: false, message: 'Submission not found' });
+        }
+
+        // If the submission is found, send it in the response
+        res.status(200).json({ success: true, data: submission });
+    } catch (error) {
+        console.error('Error getting user submission:', error);
+        res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+}
+)
