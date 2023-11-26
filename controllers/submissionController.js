@@ -23,7 +23,7 @@ exports.submitQuiz = catchAsyncError(async (req, res, next) => {
 
 exports.getMySubmission = catchAsyncError(async (req, res, next) => {
     try {
-        const userId = req.user.id; // Replace with the actual location of user information in your request object
+        const userId = req.user._id; // Replace with the actual location of user information in your request object
 
         // Query the database to retrieve the user's submission
         const submission = await Submission.findOne({ userId });
