@@ -26,7 +26,7 @@ exports.getMySubmission = catchAsyncError(async (req, res, next) => {
         const userId = req.user._id; // Replace with the actual location of user information in your request object
 
         // Query the database to retrieve the user's submission
-        const submission = await Submission.findOne({ userId });
+        const submission = await Submission.find({ userId });
 
         if (!submission) {
             return res.status(404).json({ success: false, message: 'Submission not found' });
