@@ -16,10 +16,12 @@ const student = require('./routes/studentRoute.js')
 const quiz = require('./routes/quizRoute.js')
 const user = require('./routes/userRoute.js')
 const summarizer = require('./routes/summarizer.js')
+const quizSubmission = require('./routes/submissionRoute.js')
 app.use('/api/v1/', student)
 app.use("/api/v1/", quiz)
 app.use("/api/v1/", user)
 app.use("/api/v1/", summarizer)
+app.use("/api/v1/", quizSubmission)
 app.use(errorMiddleware)
 
 

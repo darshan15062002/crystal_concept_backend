@@ -3,6 +3,7 @@ const catchAsyncError = require("../middleware/catchAsyncError");
 const { GoogleAuth } = require("google-auth-library");
 const { TextServiceClient } =
     require("@google-ai/generativelanguage").v1beta2;
+
 exports.getSummary = catchAsyncError(async (req, res) => {
 
     const openai = new OpenAI({
