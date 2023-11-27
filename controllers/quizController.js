@@ -1,6 +1,6 @@
 const catchAsyncError = require("../middleware/catchAsyncError");
 const Quiz = require("../model/quizModal");
-const { ObjectId } = mongoose.Types;
+
 exports.createQuiz = catchAsyncError(async (req, res, next) => {
     /* {
          "title":"maths",
@@ -30,13 +30,13 @@ exports.createQuiz = catchAsyncError(async (req, res, next) => {
 })
 
 exports.updateQuiz = catchAsyncError(async (req, res, next) => {
-    const manualId = new ObjectId();
+
     const { id } = req.params
     const quiz = await Quiz.findById(id);
     if (!quiz) return res.status(404).json({ success: false, message: 'quiz not found' })
 
     const { title, questions, startDate, endDate } = req.body
-    quiz._id = manualId
+
     if (title) quiz.title = title
     if (questions) quiz.questions = questions
     if (startDate) quiz.startDate = startDate
