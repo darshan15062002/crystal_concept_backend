@@ -15,6 +15,10 @@ const submissionSchema = new mongoose.Schema({
         type: [String], // Array of user's answers
         required: true,
     },
+    points: {
+        type: Number,
+        required: true
+    },
     timestamp: {
         type: Date,
         default: Date.now,

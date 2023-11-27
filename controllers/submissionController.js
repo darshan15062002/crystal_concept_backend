@@ -4,12 +4,13 @@ const Submission = require("../model/submissionModal");
 exports.submitQuiz = catchAsyncError(async (req, res, next) => {
     try {
         const userId = req.user._id
-        const { quizId, answers } = req.body;
+        const { quizId, answers, points } = req.body;
 
         const newSubmission = new Submission({
             userId,
             quizId,
             answers,
+            points
         });
 
         await newSubmission.save();
