@@ -10,7 +10,7 @@ exports.submitQuiz = catchAsyncError(async (req, res, next) => {
             userId,
             quizId,
             answers,
-            pointsc
+            points
         });
 
         await newSubmission.save();
