@@ -9,7 +9,8 @@ const router = express.Router();
 // router.post('/summarize', getSummary)
 router.post('/quiz/submission', isAuthenticated, submitQuiz)
 router.get('/quiz/submission/all', isAuthenticated, getMySubmission)
-router.get('/quiz/submission/single', isAuthenticated, getMySingleSubmission)
+router.get('/quiz/submission/single/:id', isAuthenticated, getMySingleSubmission);
+
 
 
 
