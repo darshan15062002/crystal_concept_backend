@@ -41,3 +41,21 @@ exports.getMySubmission = catchAsyncError(async (req, res, next) => {
 }
 )
 
+exports.getMySingleSubmission = catchAsyncError(async (req, res, next) => {
+    try {
+        const quizId = req.params.id;
+
+        const submission = await Submission.findOne({ quizId });
+
+        if (!submission || Object.keys(submission).length === 0) {
+            return res.status(404).json({ success: false, message: 'Submission not found' });
+        }
+
+        // If the submission is found, send it in the response
+        res.status(200).json({ success: true, data: submission });
+    } catch (error) {
+        console.error('Error getting user submission:', error);
+        res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+});
+
