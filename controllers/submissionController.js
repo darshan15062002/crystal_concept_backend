@@ -10,7 +10,7 @@ exports.submitQuiz = catchAsyncError(async (req, res, next) => {
             userId,
             quizId,
             answers,
-            points
+            pointsc
         });
 
         await newSubmission.save();
@@ -45,8 +45,8 @@ exports.getMySubmission = catchAsyncError(async (req, res, next) => {
 exports.getMySingleSubmission = catchAsyncError(async (req, res, next) => {
     try {
         const quizId = req.params.id;
-
-        const submission = await Submission.findOne({ quizId });
+        const userId = req.user._id;
+        const submission = await Submission.findOne({ quizId, userId });
 
         if (!submission || Object.keys(submission).length === 0) {
             return res.status(404).json({ success: false, message: 'Submission not found' });
