@@ -15,11 +15,15 @@ exports.createUser = catchAsyncError(async (req, res, next) => {
     // }
     const { name, phone, password } = req.body
 
-    const response = await User.findOne({ phone })
+    const res = await User.findOne({
+        $or: [
+            { username: name },   // Replace yourInput with the actual username you are searching for
+            { phone: phone },      // Replace yourInput with the actual phone number you are searching for
+        ],
+    })
 
-    if (response) return next(new ErrorHander("User already exists", 400));
-    const res = await User.findOne({ name })
-    if (res) return next(new ErrorHander("User name already taken  ", 400));
+
+    if (res) return next(new ErrorHander("User already exist  ", 400));
 
     const user = await User.create({ name, phone, password })
 
