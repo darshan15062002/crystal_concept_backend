@@ -35,7 +35,7 @@ exports.loginUser = catchAsyncError(async (req, res, next) => {
     const { email, password } = req.body;
     const user = await User.findOne({
         $or: [
-            { username: email },   // Replace yourInput with the actual username you are searching for
+            { name: email },   // Replace yourInput with the actual username you are searching for
             { phone: email },      // Replace yourInput with the actual phone number you are searching for
         ],
     }).select("+password");
