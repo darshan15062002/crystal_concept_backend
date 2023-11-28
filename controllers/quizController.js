@@ -36,13 +36,14 @@ exports.updateQuiz = catchAsyncError(async (req, res, next) => {
     if (!quiz) return res.status(404).json({ success: false, message: 'quiz not found' })
 
     const { title, questions, startDate, endDate, visibility } = req.body
-
+    console.log(visibility);
     if (title) quiz.title = title
     if (questions) quiz.questions = questions
     if (startDate) quiz.startDate = startDate
     if (endDate) quiz.endDate = endDate
-    if (visibility) quiz.visibility = visibility
-
+    if (visibility !== undefined) {
+        quiz.visibility = visibility;
+    }
     const response = await quiz.save()
     res.status(200).json({
         success: true,
