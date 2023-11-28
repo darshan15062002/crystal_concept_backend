@@ -36,7 +36,6 @@ exports.updateQuiz = catchAsyncError(async (req, res, next) => {
     if (!quiz) return res.status(404).json({ success: false, message: 'quiz not found' })
 
     const { title, questions, startDate, endDate, visibility } = req.body
-    console.log(visibility);
     if (title) quiz.title = title
     if (questions) quiz.questions = questions
     if (startDate) quiz.startDate = startDate
@@ -55,6 +54,17 @@ exports.updateQuiz = catchAsyncError(async (req, res, next) => {
 exports.getAllQuiz = catchAsyncError(async (req, res, next) => {
 
     const quizs = await Quiz.find({}).sort({ createdAt: -1 });
+
+    res.status(200).json({
+        success: true,
+        quizs
+    })
+
+})
+
+exports.getAllVisibleQuiz = catchAsyncError(async (req, res, next) => {
+
+    const quizs = await Quiz.find({ visibility: true }).sort({ createdAt: -1 });
 
     res.status(200).json({
         success: true,
