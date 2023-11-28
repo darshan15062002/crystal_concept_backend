@@ -27,6 +27,11 @@ const quizSchema = new mongoose.Schema({
 
         },
     ],
+    visibility: {
+        type: Boolean,
+        default: true,
+    }
+    ,
     timeLimit: {
         type: Number,
         default: 0,
