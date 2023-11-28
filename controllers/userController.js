@@ -40,7 +40,7 @@ exports.loginUser = catchAsyncError(async (req, res, next) => {
         ],
     }).select("+password");
 
-    if (!res) return next(new ErrorHander("user not found", 404));
+    if (!user) return next(new ErrorHander("user not found", 404));
 
     if (!password) return next(ErrorHander("please enter password", 400))
 
