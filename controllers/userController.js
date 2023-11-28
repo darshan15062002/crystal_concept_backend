@@ -13,12 +13,15 @@ exports.createUser = catchAsyncError(async (req, res, next) => {
     //     "email":"darshan@gmail.com",
     //     "password":"$$dar$$120"
     // }
-    const { name, email, password } = req.body
+    const { name, phone, password } = req.body
 
-    const response = await User.findOne({ email })
+    const response = await User.findOne({ phone })
+
     if (response) return next(new ErrorHander("User already exists", 400));
+    const res = await User.findOne({ name })
+    if (res) return next(new ErrorHander("User name already taken  ", 400));
 
-    const user = await User.create({ name, email, password })
+    const user = await User.create({ name, phone, password })
 
     sendToken(user, res, 201, "Registered Successfully");
 })
