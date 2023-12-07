@@ -13,7 +13,7 @@ exports.createUser = catchAsyncError(async (req, res, next) => {
     //     "email":"darshan@gmail.com",
     //     "password":"$$dar$$120"
     // }
-    const { name, phone, password } = req.body
+    const { name, phone, std, location, password } = req.body
 
     const response = await User.findOne({
         $or: [
@@ -25,8 +25,7 @@ exports.createUser = catchAsyncError(async (req, res, next) => {
 
     if (response) return next(new ErrorHander("User already exist  ", 400));
 
-    const user = await User.create({ name, phone, password })
-    console.log(user);
+    const user = await User.create({ name, phone, std, location, password })
     sendToken(user, res, 201, "Registered Successfully");
 })
 

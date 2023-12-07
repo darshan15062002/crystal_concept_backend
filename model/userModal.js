@@ -14,6 +14,15 @@ const userSchema = new mongoose.Schema({
         required: [true, 'Please provide a phone number'],
         unique: true,
     },
+    std: {
+        type: String,
+        required: [true, 'Please provide a standard'],
+    },
+    location: {
+        type: String,
+        required: [true, 'Please provide a location'],
+    },
+
     password: {
         type: String,
         require: [true, 'please provide password'],
