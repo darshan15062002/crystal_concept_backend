@@ -11,6 +11,10 @@ const submissionSchema = new mongoose.Schema({
         ref: 'Quiz', // Reference to the Quiz model
         required: true,
     },
+    quizTitle: {
+        type: String,
+        required: true,
+    },
     answers: {
         type: [String], // Array of user's answers
         required: true,
