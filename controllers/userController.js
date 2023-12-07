@@ -21,7 +21,7 @@ exports.createUser = catchAsyncError(async (req, res, next) => {
             { phone: phone },      // Replace yourInput with the actual phone number you are searching for
         ],
     })
-    console.log('Creating user with:', { name, phone, password });
+
 
     if (response) return next(new ErrorHander("User already exist  ", 400));
 

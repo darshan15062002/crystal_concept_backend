@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken')
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
-        require: [true, 'please provide name']
+        required: [true, 'Please provide name'],
     },
     phone: {
         type: String,
@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         require: [true, 'please provide password'],
-        minLength: [6, "Password must be at least 6 characters long"],
+        minlength: [6, "Password must be at least 6 characters long"],
         select: false,
     },
     role: {
