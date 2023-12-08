@@ -67,10 +67,13 @@ exports.getMyProfile = catchAsyncError(async (req, res, next) => {
 
 exports.updateProfile = catchAsyncError(async (req, res, next) => {
     const user = await User.findById(req.user._id);
-    const { name, email } = req.body;
+    const { name, phone, std, location, } = req.body;
 
     if (name) user.name = name;
-    if (email) user.email = email;
+    if (phone) user.phone = phone;
+    if (std) user.std = std;
+    if (location) user.location = location;
+
 
     await user.save();
 
