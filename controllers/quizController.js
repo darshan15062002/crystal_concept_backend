@@ -2,23 +2,7 @@ const catchAsyncError = require("../middleware/catchAsyncError");
 const Quiz = require("../model/quizModal");
 
 exports.createQuiz = catchAsyncError(async (req, res, next) => {
-    /* {
-         "title":"maths",
-        "questions": [
-         {
-             "text": "What is the capital of France?",
-             "answers": ["London", "Paris", "Berlin"],
-             "correctAnswer": 1
-         },
-         {
-             "text": "What is the largest ocean?",
-             "answers": ["Pacific Ocean", "Atlantic Ocean", "Indian Ocean"],
-             "correctAnswer": 0
-         }
-     ],
-           "startDate":"2023-09-30T12:00:00.000Z",
-       "endDate":  "2023-09-30T12:30:00.000Z"
-     }*/
+
     console.log(req.body);
     const response = await Quiz.create(req.body);
 

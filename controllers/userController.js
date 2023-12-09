@@ -2,6 +2,7 @@ const catchAsyncError = require("../middleware/catchAsyncError");
 const User = require("../model/userModal");
 const { sendToken, cookieOptions } = require("../utils/feature.js");
 const ErrorHander = require("../utils/errorhandler");
+const ApiFeatures = require("../utils/apiFeatures.js");
 
 
 
@@ -32,6 +33,7 @@ exports.createUser = catchAsyncError(async (req, res, next) => {
 
 exports.loginUser = catchAsyncError(async (req, res, next) => {
     const { email, password } = req.body;
+    console.log(email, password);
     const user = await User.findOne({
         $or: [
             { name: email },   // Replace yourInput with the actual username you are searching for
@@ -83,3 +85,19 @@ exports.updateProfile = catchAsyncError(async (req, res, next) => {
     });
 
 })
+
+exports.getAllUser = catchAsyncError(async (req, res, next) => {
+    const pagination = 10
+    const userCount = await User.countDocuments()
+
+    const apiFeatures = new ApiFeatures(User.find(), req.query).searchByName().searchByPhone().searchByCity().pagination(pagination)
+    const users = await apiFeatures.query;
+    res.status(200).json({
+        success: true,
+        userCount,
+        users
+    })
+
+});
+
+

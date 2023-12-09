@@ -13,6 +13,13 @@ exports.isAuthenticated = catchAsyncError(async (req, res, next) => {
     const decodedData = jwt.verify(crystal, process.env.JWT_SECRET)
 
     req.user = await User.findById(decodedData._id);
-
+    console.log(req.user);
     next()
 })
+
+exports.isAdmin = catchAsyncError(async (req, res, next) => {
+
+    if (req.user.role !== "admin")
+        return next(new ErrorHander("Only Admin allowed", 401));
+    next();
+});

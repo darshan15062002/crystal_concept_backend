@@ -5,23 +5,17 @@ class ApiFeatures {
         this.query = query
         this.queryStr = queryStr
     }
-    search() {
+    searchByPhone() {
 
-        const keyword = this.queryStr.keyword ? {
-            email: this.queryStr.keyword
+        const keyword = this.queryStr.phone ? {
+            phone: this.queryStr.phone
         } : {}
 
-        const query = this.query.find({ ...keyword })
+        this.query.find({ ...keyword })
 
         return this
     }
-    searchByName() {
-        const keyword = this.queryStr.name ? {
-            name: this.queryStr.name
-        } : {}
-        const query = this.query.find({ ...keyword })
-        return this
-    }
+
     searchByName() {
         const keyword = this.queryStr.name ? {
             name: {
@@ -29,10 +23,31 @@ class ApiFeatures {
                 $options: 'i',
             },
         } : {}
-        const query = this.query.find({ ...keyword })
+        this.query.find({ ...keyword })
         return this
     }
+    searchByCity() {
+        const keyword = this.queryStr.city ? {
+            location: {
+                $regex: this.queryStr.city,
+                $options: 'i',
+            },
+        } : {}
+        this.query.find({ ...keyword })
+        return this
+    }
+
+    pagination(pagination) {
+        const currentPage = Number(this.queryStr.page) || 1
+        const skip = pagination * (currentPage - 1)
+
+        this.query = this.query.limit(pagination).skip(skip)
+        return this
+    }
+
+
 }
 module.exports = ApiFeatures
+
 
 
