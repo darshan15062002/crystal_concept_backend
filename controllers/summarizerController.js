@@ -10,18 +10,15 @@ exports.getSummary = catchAsyncError(async (req, res) => {
         apiKey: process.env.OPENAI_API_KEY,
     });
     const pdfText = req.body.pdf_text;
-    const rows = req.body.rows;
+
 
     // Your prompt to ChatGPT for summarization
-    const prompt = `Summarize the following text: ${pdfText}`;
+
 
 
     // Set up the data payload
 
-    const messages = [
-        { role: 'system', content: `You are a helpful assistant that covert the answer of qestion in more simple and easy to learn format in ${rows} rows only` },
-        { role: 'user', content: prompt }
-    ]
+    const messages = `Given ${pdfText}, please provide a concise and easily understandable summary. Ensure that the summary captures the key ideas and important details for effective learning and memorization. Use clear language and focus on the most essential information.`
 
     try {
 

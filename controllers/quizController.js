@@ -22,7 +22,7 @@ exports.updateQuiz = catchAsyncError(async (req, res, next) => {
     const { title, questions, startDate, endDate, visibility } = req.body
     if (title) quiz.title = title
     if (questions) quiz.questions = questions
-    if (startDate) quiz.startDate = startDate
+    if (std) quiz.std = std
     if (endDate) quiz.endDate = endDate
     if (visibility !== undefined) {
         quiz.visibility = visibility;
