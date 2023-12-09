@@ -90,7 +90,7 @@ exports.getAllUser = catchAsyncError(async (req, res, next) => {
     const pagination = 10
     const userCount = await User.countDocuments()
 
-    const apiFeatures = new ApiFeatures(User.find(), req.query).searchByName().searchByPhone().searchByCity().pagination(pagination)
+    const apiFeatures = new ApiFeatures(User.find(), req.query).searchByName().searchByPhone().searchByStd().searchByCity().pagination(pagination)
     const users = await apiFeatures.query;
     res.status(200).json({
         success: true,
