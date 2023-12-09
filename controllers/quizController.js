@@ -47,8 +47,8 @@ exports.getAllQuiz = catchAsyncError(async (req, res, next) => {
 })
 
 exports.getAllVisibleQuiz = catchAsyncError(async (req, res, next) => {
-
-    const quizs = await Quiz.find({ visibility: true }).sort({ createdAt: -1 });
+    const std = req?.user?.std
+    const quizs = await Quiz.find({ visibility: true, std }).sort({ createdAt: -1 });
 
     res.status(200).json({
         success: true,
