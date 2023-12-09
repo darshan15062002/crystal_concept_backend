@@ -18,7 +18,7 @@ class ApiFeatures {
     searchByStd() {
 
         const keyword = this.queryStr.std ? {
-            phone: this.queryStr.std
+            std: this.queryStr.std
         } : {}
 
         this.query.find({ ...keyword })
