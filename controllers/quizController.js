@@ -1,5 +1,6 @@
 const catchAsyncError = require("../middleware/catchAsyncError");
 const Quiz = require("../model/quizModal");
+const Submission = require("../model/submissionModal");
 
 exports.createQuiz = catchAsyncError(async (req, res, next) => {
 
@@ -38,10 +39,23 @@ exports.updateQuiz = catchAsyncError(async (req, res, next) => {
 exports.getAllQuiz = catchAsyncError(async (req, res, next) => {
 
     const quizs = await Quiz.find({}).sort({ createdAt: -1 });
+    let docs = []
+    if (quizs) {
+        for (const item of quizs) {
+            try {
+                const numberOfSubmissions = await Submission.countDocuments({ quizId: item._id });
+                docs.push(numberOfSubmissions)
+            } catch (error) {
+                console.error(`Error counting submissions for quiz ${item._id}:`, error);
+            }
+        }
+    }
 
     res.status(200).json({
         success: true,
-        quizs
+        quizs,
+        docs
+
     })
 
 })

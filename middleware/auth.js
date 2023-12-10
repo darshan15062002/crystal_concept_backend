@@ -13,7 +13,6 @@ exports.isAuthenticated = catchAsyncError(async (req, res, next) => {
     const decodedData = jwt.verify(crystal, process.env.JWT_SECRET)
 
     req.user = await User.findById(decodedData._id);
-    console.log(req.user);
     next()
 })
 
