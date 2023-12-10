@@ -62,7 +62,7 @@ exports.getSummaryGoogle = catchAsyncError((req, res) => {
         authClient: new GoogleAuth().fromAPIKey(API_KEY),
     });
 
-    const prompt = `You are a friendly study assistant. Can you help me simplify this text so that it's easier for students to remember? Here's the text for you to review: ${pdfText} , give me in proper formate`;
+    const prompt = `Given ${pdfText}, please provide a concise and easily understandable summary. Ensure that the summary captures the key ideas and important details for effective learning and memorization. Use clear language and focus on the most essential information.`;
 
     client
         .generateText({
