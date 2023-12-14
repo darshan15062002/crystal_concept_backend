@@ -2,10 +2,12 @@ const express = require('express')
 const cors = require('cors')
 const cookieParser = require('cookie-parser');
 const app = express();
+const bodyParser = require('body-parser');
 app.use(cors({
     origin: ['http://localhost:3000', "https://crystal-concept-a928f.web.app"], // specify the exact origin for requests with credentials
     credentials: true,
 }));
+app.use(bodyParser.json());
 app.use(express.json())
 app.use(cookieParser());
 

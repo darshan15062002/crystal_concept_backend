@@ -49,6 +49,7 @@ exports.getSummary = catchAsyncError(async (req, res) => {
 
 exports.getSummaryGoogle = catchAsyncError((req, res) => {
     const pdfText = req.body.pdf_text;
+
     const rows = req.body.rows;
     const MODEL_NAME = "models/text-bison-001";
     const API_KEY = process.env.API_KEY;

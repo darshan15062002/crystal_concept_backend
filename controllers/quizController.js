@@ -1,6 +1,11 @@
+const { GoogleAuth } = require("google-auth-library");
 const catchAsyncError = require("../middleware/catchAsyncError");
 const Quiz = require("../model/quizModal");
 const Submission = require("../model/submissionModal");
+const { TextServiceClient } =
+    require("@google-ai/generativelanguage").v1beta2;
+
+
 
 exports.createQuiz = catchAsyncError(async (req, res, next) => {
 
@@ -98,3 +103,68 @@ exports.deleteQuiz = catchAsyncError(async (req, res, next) => {
     })
 
 })
+
+
+exports.getAllGeneratedQuizzes = catchAsyncError(async (req, res, next) => {
+    const pdfText = req.body.pdf_text;  // Correctly access the PDF text property
+    ;
+    const noQue = req.body.noque;
+    const MODEL_NAME = "models/text-bison-001";
+    const API_KEY = process.env.API_KEY;
+
+    if (!pdfText || pdfText.length <= 500) {
+        return res.status(200).json({
+            success: true,
+            message: "The provided text is not suitable."
+        });
+    }
+
+    const client = new TextServiceClient({
+        authClient: new GoogleAuth().fromAPIKey(API_KEY),
+    });
+
+    const prompt = `
+    PDF Text: ${pdfText} 
+    Generate 10 multiple-choice questions with four options each based on the provided PDF Text. 
+    and fifth option is the possition of correct answers out of four options like 2
+    Ensure the questions cover various aspects of the text.
+    `
+
+    client.generateText({
+        model: MODEL_NAME,
+        prompt: {
+            text: prompt,
+        },
+    })
+        .then((result) => {
+            const generatedText = result[0]?.candidates[0]?.output || "No output available";
+
+            // const inputText = generatedText.split(/\s{4,}\d+\.\s/).filter(Boolean);
+            const questions = generatedText.split('\n').filter(Boolean);
+
+            const array = [];
+            for (let i = 0; i < questions.length; i += 6) {
+                let doc = {
+                    text: questions[i],
+                    answers: [
+                        questions[i + 1],
+                        questions[i + 2],
+                        questions[i + 3],
+                        questions[i + 4]
+                    ],
+                    correctAnswer: questions[i + 5],
+                };
+                array.push(doc);
+            }
+            console.log(array);
+
+
+
+
+            res.status(200).json({
+                success: true,
+                array
+            });
+        })
+
+});
