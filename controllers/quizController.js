@@ -108,7 +108,7 @@ exports.deleteQuiz = catchAsyncError(async (req, res, next) => {
 exports.getAllGeneratedQuizzes = catchAsyncError(async (req, res, next) => {
     const pdfText = req.body.pdf_text;  // Correctly access the PDF text property
     ;
-    const noQue = req.body.noque;
+    const noQue = req.body.noQue;
     const MODEL_NAME = "models/text-bison-001";
     const API_KEY = process.env.API_KEY;
 
@@ -125,9 +125,10 @@ exports.getAllGeneratedQuizzes = catchAsyncError(async (req, res, next) => {
 
     const prompt = `
     PDF Text: ${pdfText} 
-    Generate 10 multiple-choice questions with four options each based on the provided PDF Text. 
+    Generate ${noQue} multiple-choice questions with four options each based on the provided PDF Text. 
     and fifth option is the possition of correct answers out of four options like 2
     Ensure the questions cover various aspects of the text.
+    
     `
 
     client.generateText({
@@ -143,6 +144,8 @@ exports.getAllGeneratedQuizzes = catchAsyncError(async (req, res, next) => {
             const questions = generatedText.split('\n').filter(Boolean);
 
             const array = [];
+
+
             for (let i = 0; i < questions.length; i += 6) {
                 let doc = {
                     text: questions[i],
@@ -152,7 +155,7 @@ exports.getAllGeneratedQuizzes = catchAsyncError(async (req, res, next) => {
                         questions[i + 3],
                         questions[i + 4]
                     ],
-                    correctAnswer: questions[i + 5],
+                    correctAnswer: questions[i + 5].slice(-1),
                 };
                 array.push(doc);
             }
@@ -164,6 +167,11 @@ exports.getAllGeneratedQuizzes = catchAsyncError(async (req, res, next) => {
             res.status(200).json({
                 success: true,
                 array
+            });
+        }).catch((error) => {
+            res.status(500).json({
+                success: false,
+                message: "Internal surver error"
             });
         })
 
