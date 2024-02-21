@@ -120,7 +120,6 @@ exports.getAllGeneratedQuizzes = catchAsyncError(async (req, res, next) => {
     }
 
     const client = new TextServiceClient({
-
         authClient: new GoogleAuth().fromAPIKey(API_KEY),
     });
 
