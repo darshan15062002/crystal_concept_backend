@@ -110,12 +110,10 @@ exports.forgetPasswordMobile = catchAsyncError(async (req, res, next) => {
     const { phone } = req.body
 
 
-    const user = await User.findOne({
-        $or: [
-            { name: phone },   // Replace yourInput with the actual username you are searching for
-            { phone: phone },      // Replace yourInput with the actual phone number you are searching for
-        ],
-    })
+    const user = await User.findOne(
+        {
+            phone: phone
+        })
 
     if (!user) return next(new ErrorHander("Incorrect Mobile Number", 404));
 
