@@ -4,6 +4,12 @@ const { sendToken, cookieOptions } = require("../utils/feature.js");
 const ErrorHander = require("../utils/errorhandler");
 const ApiFeatures = require("../utils/apiFeatures.js");
 
+const accountSid = process.env.TWILIO_SID;
+const authToken = process.env.TWILIO_AUTH;
+const twilioPhoneNumber = process.env.TWILIO_NO;
+
+
+const client = require('twilio')(accountSid, authToken);
 
 
 
@@ -99,5 +105,93 @@ exports.getAllUser = catchAsyncError(async (req, res, next) => {
     })
 
 });
+
+exports.forgetPasswordMobile = catchAsyncError(async (req, res, next) => {
+    const { phone } = req.body
+
+    const user = await User.findOne({ phone })
+
+    if (!user) return next(new ErrorHander("Incorrect Mobile Number", 404));
+
+    const otp = generateOTP()
+    const otp_expire = 15 * 60 * 1000;
+
+    user.otp = otp;
+
+    user.otp_expire = new Date(Date.now() + otp_expire);
+
+    await user.save();
+
+    const message = `Your OTP for Resetting Password is ${otp}. Please ignore if you haven't requested this.`;
+    try {
+        console.log(user.phone);
+        await sendSMS(user.phone, message);
+    } catch (error) {
+        user.otp = null;
+        user.otp_expire = null;
+        await user.save();
+        return next(error);
+    }
+
+    res.status(200).json({
+        success: true,
+        message: `OTP Sent To ${user.phone}`,
+    });
+})
+
+
+exports.resetpasswordMobile = catchAsyncError(async (req, res, next) => {
+    const { otp, password } = req.body;
+
+    const user = await User.findOne({
+        otp,
+        otp_expire: {
+            $gt: Date.now(),
+        },
+    });
+
+    if (!user)
+        return next(new ErrorHander("Incorrect OTP or has been expired", 400));
+
+    if (!password)
+        return next(new ErrorHander("Please Enter New Password", 400));
+
+    user.password = password;
+    user.otp = undefined;
+    user.otp_expire = undefined;
+
+    await user.save();
+
+    res.status(200).json({
+        success: true,
+        message: "Password Changed Successfully, You can login now",
+    });
+});
+
+
+
+function generateOTP() {
+    // Generate a random 6-digit OTP
+    return Math.floor(100000 + Math.random() * 900000);
+}
+async function sendSMS(to, body) {
+    try {
+        await client.messages
+            .create({
+                body,
+                from: twilioPhoneNumber,
+                to: "+91" + to,
+            });
+    } catch (error) {
+        console.log(error);
+        throw new ErrorHander('Error sending SMS', 500);
+    }
+}
+
+
+
+
+
+
 
 
