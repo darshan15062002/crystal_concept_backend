@@ -33,7 +33,16 @@ exports.createUser = catchAsyncError(async (req, res, next) => {
     if (response) return next(new ErrorHander("User already exist  ", 400));
 
     const user = await User.create({ name, phone, std, location, password, role })
-    sendToken(user, res, 201, "Registered Successfully");
+    if (role !== "user") {
+
+        res.status(200).json({
+            success: true,
+            message: "Registered Successfully"
+        })
+    } else {
+        sendToken(user, res, 201, "Registered Successfully");
+    }
+
 })
 
 
