@@ -115,6 +115,19 @@ exports.getAllUser = catchAsyncError(async (req, res, next) => {
 
 });
 
+exports.getAllStudents = catchAsyncError(async (req, res, next) => {
+    const role = req.query.role
+
+
+    const student = await User.find({ role: role })
+
+    res.status(200).json({
+        success: true,
+        student
+    })
+
+});
+
 exports.forgetPasswordMobile = catchAsyncError(async (req, res, next) => {
     const { phone } = req.body
 
