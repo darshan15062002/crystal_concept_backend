@@ -15,6 +15,7 @@ router.put('/user/updateprofile', isAuthenticated, updateProfile)
 router.get("/user/logout", isAuthenticated, logoutUser);
 
 router.get('/user/all', isAuthenticated, isAdmin, getAllUser)
+router.get('/student/all', isAuthenticated, isAdmin, getAllUser)
 router.route("/user/forgetpassword").post(forgetPasswordMobile).put(resetpasswordMobile);
 
 module.exports = router
