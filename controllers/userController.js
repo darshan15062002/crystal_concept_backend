@@ -116,7 +116,7 @@ exports.getAllUser = catchAsyncError(async (req, res, next) => {
 });
 
 exports.getAllStudents = catchAsyncError(async (req, res, next) => {
-    const role = req.query.role
+    const { role } = req.query
 
 
     const student = await User.find({ role: role })
