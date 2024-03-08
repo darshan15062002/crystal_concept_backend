@@ -25,14 +25,14 @@ const userSchema = new mongoose.Schema({
 
     password: {
         type: String,
-        require: [true, 'please provide password'],
+        required: [true, 'please provide password'],
         minlength: [6, "Password must be at least 6 characters long"],
         select: false,
     },
     role: {
         type: String,
-        enum: ["admin", 'user'],
-        default: 'user'
+        enum: ["admin", 'user', 'student', 'teacher'],
+        default: 'user',
     },
     otp: Number,
     otp_expire: Date,
