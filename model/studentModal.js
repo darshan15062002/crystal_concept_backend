@@ -1,76 +1,58 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const studentSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: [true, 'please enter student name'],
-        trime: true
+        required: [true, 'Please provide name'],
     },
-    email: {
+    phone: {
         type: String,
-        required: [true, 'please enter student email'],
+        required: [true, 'Please provide a phone number'],
+        unique: true,
     },
-    standard: {
-        type: Number,
-        required: [true, 'please enter student standard']
+    std: {
+        type: String,
+        required: [true, 'Please provide a standard'],
+    },
+    location: {
+        type: String,
+        required: [true, 'Please provide a location'],
+    },
+    joindate: {
+        type: String,
+        required: [true, 'Please provide a date'],
+    },
+    role: {
+        type: String,
+        enum: ['student', 'teacher'],
+        default: 'student'
     },
 
-    // attendance: [{
-    //     Atte: {
-    //         type: Number,
-    //         required: true,
-    //         default: 0
-    //     },
-    //     createdAt: {
-    //         type: Date,
-    //         default: Date.now()
-    //     }
-    // }],
+    password: {
+        type: String,
+        required: [true, 'Please provide a password'],
+        minlength: [6, 'Password must be at least 6 characters long'],
+        select: false,
+    },
+    otp: Number,
+    otp_expire: Date,
+});
 
-    marks:
-        [{
-            m: {
-                type: Number,
-                required: true,
-                default: 0,
-            },
-            outof: {
-                type: Number,
-                required: true,
-                default: 0,
-            },
-            subject: {
-                type: String,
-                require: [true, "pleace enter subject"]
-            },
-            createdAt: {
-                type: Date,
-                default: Date.now()
-            }
-        }],
-    // Image: {
-    //     public_id: {
-    //         type: String,
-    //         required: true,
-    //     },
-    //     url: {
-    //         type: String,
-    //         required: true
+studentSchema.pre('save', async function (next) {
+    if (!this.isModified('password')) return next();
+    this.password = await bcrypt.hash(this.password, 10);
+});
 
-    //     }
+studentSchema.methods.comparePassword = async function (enteredPassword) {
+    return await bcrypt.compare(enteredPassword, this.password);
+};
 
-    // }
+studentSchema.methods.generateToken = function () {
+    return jwt.sign({ _id: this._id }, process.env.JWT_SECRET, {
+        expiresIn: '15d',
+    });
+};
 
-})
-module.exports = mongoose.model('student', studentSchema)
-
-
-
-// {
-//     "name":"darshanjain",
-//     "standard":10,
-//     "attendance":[{"Atte":12}],
-//     "marks":[{"m":12,"createdAt":"2023-07-09T14:46:17.975Z"},{"m":12,"createdAt":"2023-07-14T14:46:17.975Z"},{"m":12,"createdAt":"2023-08-10T14:46:17.975Z"},{"m":18,"createdAt":"2023-11-09T14:46:17.975Z"},{"m":12,"createdAt":"2023-11-29T14:46:17.975Z"},{"m":20,"createdAt":"2023-01-29T14:46:17.975Z"}],
-//     "Image":{ "public_id":"student2",
-//     "url":"student.jpg"}
-//     }
+module.exports = mongoose.model('Student', studentSchema); 

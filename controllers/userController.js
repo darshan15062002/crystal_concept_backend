@@ -24,7 +24,7 @@ exports.createUser = catchAsyncError(async (req, res, next) => {
 
     const response = await User.findOne({
         $or: [
-            { username: name },   // Replace yourInput with the actual username you are searching for
+            { name: name },   // Replace yourInput with the actual username you are searching for
             { phone: phone },      // Replace yourInput with the actual phone number you are searching for
         ],
     })
