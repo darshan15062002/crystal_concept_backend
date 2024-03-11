@@ -18,7 +18,7 @@ app.use(cookieParser());
 const errorMiddleware = require('./middleware/error')
 
 // routes imports
-const studentIfoRoute = require('./routes/studentIfoRoute.js')
+const studentInfoRoute = require('./routes/studentInfoRoute.js')
 const quiz = require('./routes/quizRoute.js')
 const user = require('./routes/userRoute.js')
 const summarizer = require('./routes/summarizer.js')
@@ -28,7 +28,7 @@ app.use("/api/v1/", quiz)
 app.use("/api/v1/", user)
 app.use("/api/v1/", summarizer)
 app.use("/api/v1/", quizSubmission)
-app.use("/api/v1/", studentIfoRoute)
+app.use("/api/v1/", studentInfoRoute)
 app.use(errorMiddleware)
 
 

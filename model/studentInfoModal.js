@@ -25,12 +25,12 @@ const paymentSchema = new mongoose.Schema({
 const studentInfoSchema = new mongoose.Schema({
     student: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User', // Reference to the Student model
+        ref: 'User', 
         required: true,
         unique: true
     },
     feesPaid: [paymentSchema],
-    // You can add more fields here as needed
+   
 });
 
 const StudentInfo = mongoose.model('StudentInfo', studentInfoSchema);

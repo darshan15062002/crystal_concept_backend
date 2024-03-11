@@ -60,4 +60,4 @@ exports.getStudentInfo = catchAsyncError(async (req, res, next) => {
     }
 });
 
-module.exports = exports;
+
