@@ -78,8 +78,13 @@ exports.deleteUser = catchAsyncError(async (req, res, next) => {
 
     const { id } = req.params.id
     try {
-        await User.findByIdAndDelete(id);
-        await StudentInfo.findOneAndDelete({ student: id })
+        const user = await User.findById(id);
+        const studentInfo = await StudentInfo.findOne({ student: id })
+        if (!user) return res.status(404).json({ success: false, message: 'user not found' })
+
+        await User.deleteOne({ _id: user._id })
+
+        studentInfo && await StudentInfo.deleteOne({ _id: studentInfo._id })
     }
     catch (err) {
         next(new ErrorHander("Server Error", 500));
