@@ -3,6 +3,7 @@ const User = require("../model/userModal");
 const { sendToken, cookieOptions } = require("../utils/feature.js");
 const ErrorHander = require("../utils/errorhandler");
 const ApiFeatures = require("../utils/apiFeatures.js");
+const StudentInfo = require("../model/studentInfoModal.js");
 
 const accountSid = process.env.TWILIO_SID;
 const authToken = process.env.TWILIO_AUTH;
@@ -72,6 +73,18 @@ exports.logoutUser = catchAsyncError(async (req, res, next) => {
         message: 'logout successful'
     })
 })
+
+exports.deleteUser = catchAsyncError(async (req, res, next) => {
+
+    const {id} = req.params.id
+    await User.findByIdAndDelete(id);
+    await StudentInfo.findOneAndDelete({student:id})
+
+    res.status(200).json({
+        success: true,
+       message:'User deleted successfully'
+    });
+});
 
 exports.getMyProfile = catchAsyncError(async (req, res, next) => {
     const user = await User.findById(req.user._id);
