@@ -76,13 +76,18 @@ exports.logoutUser = catchAsyncError(async (req, res, next) => {
 
 exports.deleteUser = catchAsyncError(async (req, res, next) => {
 
-    const {id} = req.params.id
-    await User.findByIdAndDelete(id);
-    await StudentInfo.findOneAndDelete({student:id})
+    const { id } = req.params.id
+    try {
+        await User.findByIdAndDelete(id);
+        await StudentInfo.findOneAndDelete({ student: id })
+    }
+    catch (err) {
+        next(new ErrorHander("Server Error", 500));
+    }
 
     res.status(200).json({
         success: true,
-       message:'User deleted successfully'
+        message: 'User deleted successfully'
     });
 });
 
