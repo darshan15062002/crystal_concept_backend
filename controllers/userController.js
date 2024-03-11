@@ -75,19 +75,22 @@ exports.logoutUser = catchAsyncError(async (req, res, next) => {
 })
 
 exports.deleteUser = catchAsyncError(async (req, res, next) => {
+    const { id } = req.params;  // Updated this line to correctly extract id from req.params
 
-    const { id } = req.params.id
     try {
         const user = await User.findById(id);
-        const studentInfo = await StudentInfo.findOne({ student: id })
-        if (!user) return res.status(404).json({ success: false, message: 'user not found' })
+        const studentInfo = await StudentInfo.findOne({ student: id });
 
-        await User.deleteOne({ _id: user._id })
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
 
-        studentInfo && await StudentInfo.deleteOne({ _id: studentInfo._id })
-    }
-    catch (err) {
-        next(new ErrorHander("Server Error", 500));
+        await User.deleteOne({ _id: user._id });
+
+        // Use studentInfo?._id to avoid errors if studentInfo is null or undefined
+        studentInfo?._id && await StudentInfo.deleteOne({ _id: studentInfo._id });
+    } catch (err) {
+        return next(new ErrorHandler("Server Error", 500));
     }
 
     res.status(200).json({
@@ -95,7 +98,6 @@ exports.deleteUser = catchAsyncError(async (req, res, next) => {
         message: 'User deleted successfully'
     });
 });
-
 exports.getMyProfile = catchAsyncError(async (req, res, next) => {
     const user = await User.findById(req.user._id);
 
