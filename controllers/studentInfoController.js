@@ -62,8 +62,10 @@ exports.getStudentInfo = catchAsyncError(async (req, res, next) => {
 
 exports.deleteTransaction = catchAsyncError(async (req, res, next) => {
 
-    const {id} = req.params.id
+    const {id} = req.params
+ 
     const {tid} = req.body
+    console.log(id,tid);
     const studentInfo = await StudentInfo.findOne({ student: id });
 
         if (!studentInfo) {
@@ -75,7 +77,7 @@ exports.deleteTransaction = catchAsyncError(async (req, res, next) => {
 
     res.status(200).json({
         success: true,
-       message:'User deleted successfully'
+       message:'deleted successfully'
     });
 });
 
