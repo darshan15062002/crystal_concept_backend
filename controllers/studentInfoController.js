@@ -60,4 +60,23 @@ exports.getStudentInfo = catchAsyncError(async (req, res, next) => {
     }
 });
 
+exports.deleteTransaction = catchAsyncError(async (req, res, next) => {
+
+    const {id} = req.params.id
+    const {tid} = req.body
+    const studentInfo = await StudentInfo.findOne({ student: id });
+
+        if (!studentInfo) {
+            return res.status(404).json({success:false, message: "Student info not found" });
+        }
+        studentInfo.feesPaid=studentInfo.feesPaid.filter((item)=> item._id !== tid)
+
+        studentInfo.save()
+
+    res.status(200).json({
+        success: true,
+       message:'User deleted successfully'
+    });
+});
+
 
