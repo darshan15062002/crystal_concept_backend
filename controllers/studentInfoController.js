@@ -61,24 +61,31 @@ exports.getStudentInfo = catchAsyncError(async (req, res, next) => {
 });
 
 exports.deleteTransaction = catchAsyncError(async (req, res, next) => {
+    const { id } = req.params;
+    const { tid } = req.body;
 
-    const {id} = req.params
- 
-    const {tid} = req.body
-    console.log(id,tid);
-    const studentInfo = await StudentInfo.findOne({ student: id });
+    try {
+        const studentInfo = await StudentInfo.findOne({ student: id });
 
         if (!studentInfo) {
-            return res.status(404).json({success:false, message: "Student info not found" });
+            return res.status(404).json({ success: false, message: "Student info not found" });
         }
-        studentInfo.feesPaid=studentInfo.feesPaid.filter((item)=> item._id !== tid)
 
-        studentInfo.save()
+        // Filter out the transaction to be deleted
+        studentInfo.feesPaid = studentInfo.feesPaid.filter(item => item._id.toString() !== tid);
 
-    res.status(200).json({
-        success: true,
-       message:'deleted successfully'
-    });
+        // Save the updated student info
+        await studentInfo.save();
+
+        // Respond with success message
+        res.status(200).json({
+            success: true,
+            message: 'Transaction deleted successfully'
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ success: false, message: "Server Error" });
+    }
 });
 
 
