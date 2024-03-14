@@ -62,7 +62,7 @@ exports.getStudentInfo = catchAsyncError(async (req, res, next) => {
 
 exports.deleteTransaction = catchAsyncError(async (req, res, next) => {
     const { id } = req.params;
-    const { tid } = req.body;
+    const { tid } = req.query;
 
     try {
         const studentInfo = await StudentInfo.findOne({ student: id });
