@@ -32,6 +32,6 @@ exports.getDashboard = catchAsyncError(async (req, res, next) => {
         studentsCount,
         teachersCount,
         eachStdCount: [four, five, six, seven, eight, nine, ten],
-        totalrevenue: totalSum[0].totalAmount
+        totalrevenue: totalSum[0]?.totalAmount || 0
     })
 })
