@@ -1,5 +1,5 @@
 const express = require('express');
-const { createUser, loginUser, updateProfile, getMyProfile, logoutUser, getAllUser, forgetPasswordMobile, resetpasswordMobile, getAllStudents, getStudentProfile, deleteUser, } = require('../controllers/userController');
+const { createUser, loginUser, updateProfile, getMyProfile, logoutUser, getAllUser, forgetPasswordMobile, resetpasswordMobile, getAllStudents, getStudentProfile, deleteUser, updateProfileByAdmin, } = require('../controllers/userController');
 const { isAuthenticated, isAdmin } = require('../middleware/auth.js');
 
 const router = express.Router();
@@ -10,7 +10,8 @@ router.post('/user/login', loginUser)
 
 router.get('/user/me', isAuthenticated, getMyProfile)
 
-router.put('/user/updateprofile', isAuthenticated, updateProfile)
+router.put('/user/updateprofile', isAuthenticated , updateProfile)
+router.put('/user/updateprofile/:id', isAdmin , updateProfileByAdmin)
 
 router.get("/user/logout", isAuthenticated, logoutUser);
 

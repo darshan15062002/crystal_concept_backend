@@ -135,6 +135,26 @@ exports.updateProfile = catchAsyncError(async (req, res, next) => {
     });
 
 })
+exports.updateProfileByAdmin = catchAsyncError(async (req, res, next) => {
+    const user = await User.findById(req.params.id);
+    const { name, phone, std, location, } = req.body;
+
+    if (name) user.name = name;
+    if (phone) user.phone = phone;
+    if (std) user.std = std;
+    if (location) user.location = location;
+
+
+    await user.save();
+
+    res.status(200).json({
+        success: true,
+        message: "Profile Updated Successfully",
+    });
+
+})
+
+
 
 exports.getAllUser = catchAsyncError(async (req, res, next) => {
     const pagination = 10
