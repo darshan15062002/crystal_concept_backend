@@ -5,13 +5,11 @@ exports.getDashboard = catchAsyncError(async (req, res, next) => {
     const userCount = await User.countDocuments()
     const studentsCount = await User.countDocuments({ role: 'student' })
     const teachersCount = await User.countDocuments({ role: 'teacher' })
-    const four = await User.countDocuments({ role: 'student',std: 4 })
-    const five = await User.countDocuments({role: 'student', std: 5 })
-    const six = await User.countDocuments({role: 'student', std: 6 })
-    const seven = await User.countDocuments({role: 'student', std: 7 })
-    const eight = await User.countDocuments({role: 'student', std: 8 })
-    const nine = await User.countDocuments({role: 'student', std: 9 })
-    const ten = await User.countDocuments({role: 'student', std: 10 })
+    const eachStdCount = [];
+    for (let i = 4; i <= 10; i++) {
+        const stdCount = await User.countDocuments({ role: 'student', std: i });
+        eachStdCount.push(stdCount);
+    }
 
     const totalSum = await StudentInfo.aggregate([
         {
@@ -31,7 +29,7 @@ exports.getDashboard = catchAsyncError(async (req, res, next) => {
         userCount,
         studentsCount,
         teachersCount,
-        eachStdCount: [four, five, six, seven, eight, nine, ten],
+        eachStdCount: eachStdCount,
         totalrevenue: totalSum[0]?.totalAmount || 0
     })
 })
