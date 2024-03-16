@@ -10,8 +10,8 @@ router.post('/user/login', loginUser)
 
 router.get('/user/me', isAuthenticated, getMyProfile)
 
-router.put('/user/updateprofile', isAuthenticated , updateProfile)
-router.put('/user/updateprofile/:id', isAdmin , updateProfileByAdmin)
+router.put('/user/updateprofile', isAuthenticated, updateProfile)
+router.put('/user/updateprofile/:id', isAuthenticated, isAdmin, updateProfileByAdmin)
 
 router.get("/user/logout", isAuthenticated, logoutUser);
 
