@@ -7,6 +7,6 @@ const router = express.Router();
 
 
 router.post('/student/student-info',isAuthenticated,isAdmin,createStudentInfo)
-router.get('/student/student-info/:id',isAuthenticated,isAdmin, getStudentInfo)
+router.get('/student/student-info/:id',isAuthenticated, getStudentInfo)
 router.delete('/student/student-info/:id',isAuthenticated,isAdmin, deleteTransaction)
 module.exports = router
