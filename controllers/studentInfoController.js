@@ -6,7 +6,7 @@ const ErrorHander = require("../utils/errorhandler");
 
 
 exports.createStudentInfo = catchAsyncError(async (req, res, next) => {
-    const { id, feesPaid } = req.body;
+    const { id, feesPaid,exam,joindate,attendance } = req.body;
 
     // Check if studentId exists
     const existingStudent = await User.findById(id);
@@ -19,16 +19,22 @@ exports.createStudentInfo = catchAsyncError(async (req, res, next) => {
         let studentInfo = await StudentInfo.findOne({ student: id });
 
         if (!studentInfo) {
-          
-            await StudentInfo.create({
-                student: id,
-                feesPaid: [feesPaid] 
+            studentInfo = await StudentInfo.create({
+                student: id
             });
-        } else {
-          
-            studentInfo.feesPaid.push(feesPaid);
-            await studentInfo.save();
         }
+       
+        if(feesPaid) studentInfo.feesPaid.push(feesPaid);
+
+        if(exam) studentInfo.exams.push(exam)
+        if(joindate) studentInfo.joiningDate = joindate
+        if (attendance) studentInfo.attendance.push(attendance)
+
+
+
+
+            await studentInfo.save();
+       
 
         res.status(201).json({
             success: true,

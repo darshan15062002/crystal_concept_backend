@@ -21,6 +21,24 @@ const paymentSchema = new mongoose.Schema({
         default: Date.now
     }
 });
+const examSchema = new mongoose.Schema({
+    subject: {
+        type: String,
+        required: true
+    },
+    date: {
+        type: Date,
+        required: true
+    },
+    marks: {
+        type: Number,
+        required: true
+    },
+    outOf: {
+        type: Number,
+        required: true
+    }
+});
 
 const studentInfoSchema = new mongoose.Schema({
     student: {
@@ -30,8 +48,22 @@ const studentInfoSchema = new mongoose.Schema({
         unique: true
     },
     feesPaid: [paymentSchema],
+    exams: [examSchema],
+    attendance: [{
+        date: {
+            type: Date,
+            required: true
+        },
+       
+    }],
+    joiningDate: {
+        type: Date,
+        
+    }
    
 });
+
+
 
 const StudentInfo = mongoose.model('StudentInfo', studentInfoSchema);
 
