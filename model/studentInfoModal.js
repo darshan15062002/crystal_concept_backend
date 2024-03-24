@@ -14,7 +14,7 @@ const paymentSchema = new mongoose.Schema({
     paymentMethod: {
         type: String,
         required: true,
-        enum: ['Cash', 'Credit Card', 'Debit Card', 'Bank Transfer', 'Other']
+        enum: ['Cash', 'Credit Card', 'Debit Card', 'Bank Transfer', 'UPI']
     },
     timestamp: {
         type: Date,
@@ -25,12 +25,12 @@ const paymentSchema = new mongoose.Schema({
 const studentInfoSchema = new mongoose.Schema({
     student: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User', 
+        ref: 'User',
         required: true,
         unique: true
     },
     feesPaid: [paymentSchema],
-   
+
 });
 
 const StudentInfo = mongoose.model('StudentInfo', studentInfoSchema);
