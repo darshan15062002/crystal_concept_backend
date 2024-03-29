@@ -3,10 +3,10 @@
 const mongoose = require('mongoose');
 
 const paymentSchema = new mongoose.Schema({
-    month: {
-        type: String,
+    date: {
+        type: Date,
         required: true,
-        enum: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+
     },
     amount: {
         type: Number,
@@ -45,7 +45,7 @@ const examSchema = new mongoose.Schema({
 const studentInfoSchema = new mongoose.Schema({
     student: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User', 
+        ref: 'User',
         required: true,
         unique: true
     },
@@ -56,13 +56,13 @@ const studentInfoSchema = new mongoose.Schema({
             type: Date,
             required: true
         },
-       
+
     }],
     joiningDate: {
         type: Date,
-        
+
     }
-   
+
 });
 
 

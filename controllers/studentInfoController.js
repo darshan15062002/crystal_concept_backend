@@ -6,8 +6,8 @@ const ErrorHander = require("../utils/errorhandler");
 
 
 exports.createStudentInfo = catchAsyncError(async (req, res, next) => {
-    const { id, feesPaid,exam,joindate,attendance } = req.body;
-
+    const { id, feesPaid, exam, joindate, attendance } = req.body;
+    console.log(feesPaid);
     // Check if studentId exists
     const existingStudent = await User.findById(id);
     if (!existingStudent) {
@@ -15,7 +15,7 @@ exports.createStudentInfo = catchAsyncError(async (req, res, next) => {
     }
 
     try {
-       
+
         let studentInfo = await StudentInfo.findOne({ student: id });
 
         if (!studentInfo) {
@@ -23,18 +23,18 @@ exports.createStudentInfo = catchAsyncError(async (req, res, next) => {
                 student: id
             });
         }
-       
-        if(feesPaid) studentInfo.feesPaid.push(feesPaid);
 
-        if(exam) studentInfo.exams.push(exam)
-        if(joindate) studentInfo.joiningDate = joindate
+        if (feesPaid) studentInfo.feesPaid.push(feesPaid);
+
+        if (exam) studentInfo.exams.push(exam)
+        if (joindate) studentInfo.joiningDate = joindate
         if (attendance) studentInfo.attendance.push(attendance)
 
 
 
 
-            await studentInfo.save();
-       
+        await studentInfo.save();
+
 
         res.status(201).json({
             success: true,
@@ -50,11 +50,11 @@ exports.getStudentInfo = catchAsyncError(async (req, res, next) => {
     const studentId = req.params.id;
 
     try {
-       
+
         const studentInfo = await StudentInfo.findOne({ student: studentId });
 
         if (!studentInfo) {
-            return res.status(404).json({success:false, message: "Student info not found" });
+            return res.status(404).json({ success: false, message: "Student info not found" });
         }
         res.status(201).json({
             success: true,
