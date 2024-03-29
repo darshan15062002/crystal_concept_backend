@@ -13,15 +13,44 @@ exports.getDashboard = catchAsyncError(async (req, res, next) => {
 
     const totalSum = await StudentInfo.aggregate([
         {
-            $unwind: "$feesPaid" // Unwind the feesPaid array
+            $unwind: "$feesPaid"
+        },
+        {
+            $match: {
+                $expr: {
+                    $and: [
+                        // Transactions falling within the current academic year (June to May)
+                        {
+                            $or: [
+                                {
+                                    $and: [
+                                        { $eq: [{ $year: "$feesPaid.date" }, { $year: { $subtract: [new Date(), { $multiply: [86400000, 365] }] } }] }, // Same year as current or previous
+                                        { $gte: [{ $month: "$feesPaid.date" }, 6] }, // June or later
+                                        { $lte: [{ $month: "$feesPaid.date" }, 5] } // May or earlier
+                                    ]
+                                },
+                                {
+                                    $and: [
+                                        { $eq: [{ $year: "$feesPaid.date" }, { $add: [{ $year: { $subtract: [new Date(), { $multiply: [86400000, 365] }] } }, 1] }] }, // Next year
+                                        { $lte: [{ $month: "$feesPaid.date" }, 5] } // May or earlier
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
         },
         {
             $group: {
                 _id: null,
-                totalAmount: { $sum: "$feesPaid.amount" } // Calculate the total amount paid across all students
+                totalAmount: { $sum: "$feesPaid.amount" }
             }
         }
     ]);
+
+
+
 
     console.log(totalSum);
     res.status(200).json({
