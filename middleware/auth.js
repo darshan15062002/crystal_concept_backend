@@ -19,7 +19,7 @@ exports.isAuthenticated = catchAsyncError(async (req, res, next) => {
 
 exports.isAdmin = catchAsyncError(async (req, res, next) => {
 
-    if (req.user?.role !== "admin")
+    if (req.user.role !== "admin")
         return next(new ErrorHander("Only Admin allowed", 401));
     next();
 });
