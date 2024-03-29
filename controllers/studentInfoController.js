@@ -7,8 +7,7 @@ const ErrorHander = require("../utils/errorhandler");
 
 exports.createStudentInfo = catchAsyncError(async (req, res, next) => {
     const { id, feesPaid, exam, joindate, attendance } = req.body;
-    console.log(attendance);
-    // Check if studentId exists
+
     const existingStudent = await User.findById(id);
     if (!existingStudent) {
         return next(new ErrorHander("Student not found", 404));
@@ -28,7 +27,19 @@ exports.createStudentInfo = catchAsyncError(async (req, res, next) => {
 
         if (exam) studentInfo.exams.push(exam)
         if (joindate) studentInfo.joiningDate = joindate
-        if (attendance) studentInfo.attendance.push(attendance)
+        if (attendance) {
+            let attendance = new Date()
+            console.log(attendance.toDateString() === studentInfo.attendance[studentInfo.attendance.length - 1]?.toDateString());
+            if ((attendance.toDateString() === studentInfo.attendance[studentInfo.attendance.length - 1]?.toDateString())) {
+                studentInfo.attendance.splice(-1, 1);
+            }
+            else {
+                studentInfo.attendance.push(attendance);
+            }
+
+
+
+        }
 
 
 
