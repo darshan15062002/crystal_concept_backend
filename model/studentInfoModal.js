@@ -51,12 +51,12 @@ const studentInfoSchema = new mongoose.Schema({
     feesPaid: [paymentSchema],
     exams: [examSchema],
     attendance: [{
-        date: {
-            type: Date,
-            required: true
-        },
 
-    }],
+        type: Date,
+        required: true
+    },
+
+    ],
     joiningDate: {
         type: Date,
 

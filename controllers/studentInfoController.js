@@ -7,7 +7,7 @@ const ErrorHander = require("../utils/errorhandler");
 
 exports.createStudentInfo = catchAsyncError(async (req, res, next) => {
     const { id, feesPaid, exam, joindate, attendance } = req.body;
-    console.log(feesPaid);
+    console.log(attendance);
     // Check if studentId exists
     const existingStudent = await User.findById(id);
     if (!existingStudent) {
