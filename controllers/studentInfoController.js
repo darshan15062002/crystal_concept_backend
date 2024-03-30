@@ -29,7 +29,7 @@ exports.createStudentInfo = catchAsyncError(async (req, res, next) => {
         if (joindate) studentInfo.joiningDate = joindate
         if (attendance) {
             let attendance = new Date()
-            console.log(attendance.toDateString() === studentInfo.attendance[studentInfo.attendance.length - 1]?.toDateString());
+
             if ((attendance.toDateString() === studentInfo.attendance[studentInfo.attendance.length - 1]?.toDateString())) {
                 studentInfo.attendance.splice(-1, 1);
                 res.status(201).json({
