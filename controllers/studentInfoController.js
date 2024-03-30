@@ -32,9 +32,17 @@ exports.createStudentInfo = catchAsyncError(async (req, res, next) => {
             console.log(attendance.toDateString() === studentInfo.attendance[studentInfo.attendance.length - 1]?.toDateString());
             if ((attendance.toDateString() === studentInfo.attendance[studentInfo.attendance.length - 1]?.toDateString())) {
                 studentInfo.attendance.splice(-1, 1);
+                res.status(201).json({
+                    success: true,
+                    status: false
+                });
             }
             else {
                 studentInfo.attendance.push(attendance);
+                res.status(201).json({
+                    success: true,
+                    status: true
+                });
             }
 
 
