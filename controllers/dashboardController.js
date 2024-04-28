@@ -10,10 +10,22 @@ exports.getDashboard = catchAsyncError(async (req, res, next) => {
         const stdCount = await User.countDocuments({ role: 'student', std: i });
         eachStdCount.push(stdCount);
     }
-
-    const totalSum = await StudentInfo.aggregate([
+    const totalSumForStudents = await StudentInfo.aggregate([
         {
-            $unwind: "$feesPaid"
+            $lookup: {
+                from: 'users', // Assuming the name of the User collection is 'users'
+                localField: 'student',
+                foreignField: '_id',
+                as: 'studentInfo'
+            }
+        },
+        {
+            $match: {
+                'studentInfo.role': 'student' // Filter out documents where the student is a teacher
+            }
+        },
+        {
+            $unwind: "$feesPaid",
         },
         {
             $match: {
@@ -43,22 +55,28 @@ exports.getDashboard = catchAsyncError(async (req, res, next) => {
         },
         {
             $group: {
-                _id: null,
+                _id: "$student",
                 totalAmount: { $sum: "$feesPaid.amount" }
             }
         }
     ]);
 
+    let combinedTotalAmount = 0;
+
+    // Iterate through the array of results
+    totalSumForStudents.forEach(student => {
+        combinedTotalAmount += student.totalAmount;
+    });
 
 
-
-    console.log(totalSum);
+    // console.log(totalSum);
     res.status(200).json({
         success: true,
         userCount,
         studentsCount,
         teachersCount,
         eachStdCount: eachStdCount,
-        totalrevenue: totalSum[0]?.totalAmount || 0
+        totalrevenue: combinedTotalAmount
     })
 })
+
