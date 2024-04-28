@@ -10,6 +10,7 @@ exports.getDashboard = catchAsyncError(async (req, res, next) => {
         const stdCount = await User.countDocuments({ role: 'student', std: i });
         eachStdCount.push(stdCount);
     }
+    // Total sum for students
     const totalSumForStudents = await StudentInfo.aggregate([
         {
             $lookup: {
@@ -61,11 +62,70 @@ exports.getDashboard = catchAsyncError(async (req, res, next) => {
         }
     ]);
 
-    let combinedTotalAmount = 0;
+    // Total sum for teachers
+    const totalSumForTeachers = await StudentInfo.aggregate([
+        {
+            $lookup: {
+                from: 'users', // Assuming the name of the User collection is 'users'
+                localField: 'student',
+                foreignField: '_id',
+                as: 'studentInfo'
+            }
+        },
+        {
+            $match: {
+                'studentInfo.role': 'teacher' // Filter out documents where the student is not a teacher
+            }
+        },
+        {
+            $unwind: "$feesPaid",
+        },
+        {
+            $match: {
+                $expr: {
+                    $and: [
+                        // Transactions falling within the current academic year (June to May)
+                        {
+                            $or: [
+                                {
+                                    $and: [
+                                        { $eq: [{ $year: "$feesPaid.date" }, { $year: { $subtract: [new Date(), { $multiply: [86400000, 365] }] } }] }, // Same year as current or previous
+                                        { $gte: [{ $month: "$feesPaid.date" }, 6] }, // June or later
+                                        { $lte: [{ $month: "$feesPaid.date" }, 5] } // May or earlier
+                                    ]
+                                },
+                                {
+                                    $and: [
+                                        { $eq: [{ $year: "$feesPaid.date" }, { $add: [{ $year: { $subtract: [new Date(), { $multiply: [86400000, 365] }] } }, 1] }] }, // Next year
+                                        { $lte: [{ $month: "$feesPaid.date" }, 5] } // May or earlier
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            $group: {
+                _id: "$student",
+                totalAmount: { $sum: "$feesPaid.amount" }
+            }
+        }
+    ]);
+
+
+    let combineStudent = 0;
 
     // Iterate through the array of results
     totalSumForStudents.forEach(student => {
-        combinedTotalAmount += student.totalAmount;
+        combineStudent += student.totalAmount;
+    });
+    let combineTeacher = 0;
+
+    // Iterate through the array of results
+    totalSumForTeachers.forEach(teacher => {
+        combineTeacher += teacher.totalAmount;
     });
 
 
@@ -76,7 +136,8 @@ exports.getDashboard = catchAsyncError(async (req, res, next) => {
         studentsCount,
         teachersCount,
         eachStdCount: eachStdCount,
-        totalrevenue: combinedTotalAmount
+        totalrevenue: combineStudent,
+        totalspend: combineTeacher
     })
 })
 
